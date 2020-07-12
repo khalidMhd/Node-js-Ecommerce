@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <% include adminHeader %>
+  <script>
+    function myFunction() {
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          li[i].style.display = "";
+        } else {
+          li[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+
+  <div class="container">
+    <% if(orderRecord.length>0){ %>
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+    <ul id="myUL">
+      <% for(var i=0; i<orderRecord.length; i++) { %>
+      <div>
+
+        <div class="panel-heading">
+
+          <li class="panel panel-default" >
+            <a style="float: left;" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= i %> ">
+              <h4><%= orderRecord[i].user[0].fName %></h4>
+            </a>
+
+            <a data-toggle="modal" data-target="#Modal<%=orderRecord[i]._id %>">
+              <i class="fa fa-eye"></i>
+            </a>
+
+            <a data-toggle="modal" style="margin-left: 450px;"  class="btn btn-primary" data-target="#myModal<%=orderRecord[i]._id %>">
+              <%= orderRecord[i].status %>
+            </a>
+
+            <a  class="btn btn-danger " href="/admin/viewOrder/delete/<%=orderRecord[i]._id %>"
+              onclick="return confirm('Are you Sure?')"> <i  class="fa fa-trash"></i>
+            </a>
+            <p style="float: right;"><%= new Date(orderRecord[i].created_at).toLocaleString() %> </p>
+          </li>
+        </div> 
+
+          <!-- Modal -->
+      <div class="modal fade" id="Modal<%=orderRecord[i]._id %>" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+              <h4 class="modal-title" style="text-align: center;"><b><%=orderRecord[i].name %></b></h4>
+            </div>
+
+            <div>
+              <div class="modal-body">
+                <p><b>Email: </b><%=orderRecord[i].user[0].email %> </p>
+              </div>
+              <div class="modal-body">
+                <p><b>City: </b><%=orderRecord[i].user[0].city %> </p>
+             </div>
+             <div class="modal-body">
+              <p><b>Address: </b><%=orderRecord[i].user[0].address %> </p>
+           </div>
+           <div class="modal-body">
+            <p><b>Message: </b><%=orderRecord[i].message %> </p>
+         </div>
+         
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+        <div id="collapse<%= i %>" class="panel-collapse collapse">
+          <table class="table">
+            <thead>
+              <tr>
+                <th> Brand </th>
+                <th> Price </th>
+                <th> Color </th>
+                <th> Quantity </th>
+                <th> Total Price</th>
+              </tr>
+            </thead>
+
+            <div class="panel-body">
+
+              <% var products = orderRecord[i].product
+            for(var j=0; j<products.length; j++) { %>
+              <tbody>
+                <td><%= products[j].brand %></td>
+                <td><%= products[j].price %></td>
+                <td><%= products[j].color %></td>
+                <td><%=orderRecord[i].quantities[j] %> </td>
+                <td><%=orderRecord[i].quantities[j] * products[j].price %></td>
+              </tbody>
+              <% } %>
+
+            </div>
+          </table>
+        </div>
+      </div>
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal<%=orderRecord[i]._id %>" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+              <h4 class="modal-title" style="text-align: center;"><b><%=orderRecord[i].name %></b></h4>
+            </div>
+
+            <div>
+              <div class="modal-body">
+                <form action="/admin/viewOrder/<%=orderRecord[i]._id%>" method="POST">
+                  <div class="form-group">
+                    <select class="form-control" id="exampleFormControlSelect1" name='UpdateStatus'>
+                      <option>Initiated</option>
+                      <option>In Progress</option>
+                      <option>Delevered</option>
+                      <option style="color: red;">Cancel</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </ul>
+  </div>
+
+
+
+  <!-- pagination ejs -->
+  <div class="container">
+    <% if (pages > 0) { %>
+    <ul class="pagination text-center">
+      <% if (current == 1) { %>
+      <li class="disabled"><a>First</a></li>
+      <% } else { %>
+      <li><a href="/admin/viewOrder/1">First</a></li>
+      <% } %>
+      <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+      <% if (i !== 1) { %>
+      <li class="disabled"><a>...</a></li>
+      <% } %>
+      <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+      <% if (i == current) { %>
+      <li class="active"><a><%= i %></a></li>
+      <% } else { %>
+      <li><a href="/admin/viewOrder/<%= i %>"><%= i %></a></li>
+      <% } %>
+      <% if (i == Number(current) + 4 && i < pages) { %>
+      <li class="disabled"><a>...</a></li>
+      <% } %>
+      <% } %>
+      <% if (current == pages) { %>
+      <li class="disabled"><a>Last</a></li>
+      <% } else { %>
+      <li><a href="/admin/viewOrder/<%= pages %>">Last</a></li>
+      <% } %>
+    </ul>
+    <% } %>
+
+    <% } else{ %>
+
+    <h4 class="text-center"> No Order Yet!</h4>
+
+    <% }%>
+
+  </div>
+
+
+
+</body>
+
+</html>

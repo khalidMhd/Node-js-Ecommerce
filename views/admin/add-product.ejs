@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title><%= title %> </title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <% include adminHeader %> 
+
+    <% if(success != "") { %>
+        <div class="alert alert-success">
+          <strong>Success!</strong> <%= success %> 
+         <% } %>
+        </div>
+<div class="container">
+    <a class="btn btn-info" href="/admin/ViewProduct" >View Product</a>
+
+  <h2 style="text-align: center;">Add product</h2>
+  <div style=" text-align: center;">
+  </div>
+  <form class="form-inline" action="/admin/add-product" method="post"  enctype="multipart/form-data">
+
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Brand Name" name="brand" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="RAM" name="ram" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="ROM" name="rom" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Rear Camera" name="rearcamera" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Font Camera" name="fontcamera" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Battery" name="battery" required>
+    </div>
+
+    <!-- <div class="form-group">
+        <input type="text" class="form-control" placeholder="Secreen Resolution" name="secreenResolution" required>
+    </div> -->
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Sim Support" name="simSupport" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Color" name="color" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Operating System" name="operatingSystem" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Warranty" name="warranty" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="PTA" name="pta" required>
+    </div>
+
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Price" name="price" required>
+    </div>
+
+    <div class="col-md-9">
+        <select class="form-control" name="category" >
+            <% categoryRecord.forEach(function(data){%>
+                <option value="<%= data.name %>"><%= data.name %></option>
+            <% }) %>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="icode" class="col-md-3 control-label" > Brand Image</label>
+        <!-- <div class="col-md-9"> -->
+            <input type="file" class="form-control" name="file" multiple required>
+        <!-- </div> -->
+    </div> 
+
+    <br>
+        <div class="col-md-offset-3 col-md-9">
+         <input type="submit" name="submit" value="submit" class="btn btn-primary">   
+        </div>  
+    </form>
+</div>
+
+</body>
+</html>

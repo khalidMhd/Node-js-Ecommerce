@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title><%= title %> </title>
+    </head>
+
+    <body>
+    <% include header.ejs %>  
+
+    <% if(success != "") { %>
+      <div class="alert alert-success">
+      
+        <strong>Success!</strong> <%= success %> 
+       <% } %>
+      </div>
+    <!--Section: Contact v.2-->
+    <div class="container">
+<section class="mb-4">
+
+  <!--Section heading-->
+  <h2 class="h1-responsive font-weight-bold text-center my-4">Contact us</h2>
+  <!--Section description-->
+  <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within
+      a matter of hours to help you.</p>
+
+  <div class="row">
+
+      <!--Grid column-->
+      <div class="col-md-9 mb-md-0 mb-5">
+          <form id="contact-form" name="contact-form" action="/contact-us" method="POST">
+
+              <!--Grid row-->
+              <div class="row">
+
+                  <!--Grid column-->
+                  <div class="col-md-6">
+                      <div class="md-form mb-0">
+                        <label for="name" class="">Your name</label>
+                          <input type="text" id="name" name="name" class="form-control" required>
+                      </div>
+                  </div>
+                  <!--Grid column-->
+
+                  <!--Grid column-->
+                  <div class="col-md-6">
+                      <div class="md-form mb-0">
+                        <label for="email" class="">Your email</label>
+                          <input type="email" id="email" name="email" class="form-control" required>
+                      </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="md-form mb-0">
+                      <label for="email" class="">Your Mobile no.</label>
+                        <input type="number" id="mble" name="mobile" class="form-control" required>
+                    </div>
+                </div>
+
+                  <!--Grid column-->
+                  <div class="col-md-6">
+                    <div class="md-form mb-0">
+                          <label for="subject" class="">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+                </div>
+              </div>
+              <!--Grid row-->
+
+              <!--Grid row-->
+             
+              <!--Grid row-->
+
+              <!--Grid row-->
+              <div class="row">
+
+                  <!--Grid column-->
+                  <div class="col-md-12">
+
+                      <div class="md-form">
+                        <label for="message">Your message</label>
+                          <textarea type="text" id="message" name="message" rows="4" class="form-control md-textarea" required></textarea>
+                      </div>
+
+                  </div>
+              </div>
+              <% contactRecord.forEach(function(data) { %>
+               <input class="form-control"  type="hidden" name="counter" value="<%= data.counter +1 %>">
+              <% } ) %> 
+              <!--Grid row-->
+              <div class="form-group">
+                <!-- Button -->                                        
+                <div style="text-align: center; margin-top:10px;">
+                <input  type="submit" name="submit" value="send" class="btn btn-primary btn-lg btn-block">   
+                </div>
+              </div> 
+
+          </form>
+
+          
+          <div class="status"></div>
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-md-3 text-center">
+          <ul class="list-unstyled mb-0">
+             
+
+              <li><i class="fa fa-phone mt-4 fa-2x"></i>
+                  <p>+92 0000000</p>
+              </li>
+
+              <li><i class="fa fa-envelope mt-4 fa-2x"></i>
+                  <p>khalid@gmail.com</p>
+              </li>
+          </ul>
+      </div>
+      <!--Grid column-->
+
+  </div>
+
+</section>
+
+</div>
+<!--Section: Contact v.2-->
+    <% include footer %> 
+  
+</body>
+    
+</html>

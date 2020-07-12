@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %> </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+       
+    <style>
+        .hovereffect {
+        width: 100%;
+        height: 100%;
+        float: left;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        cursor: default;
+        }
+
+        .hovereffect .overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        }
+
+        .hovereffect img {
+        display: block;
+        position: relative;
+        }
+
+        .hovereffect h2 {
+        text-transform: uppercase;
+        color: #fff;
+        text-align: center;
+        font-size: 17px;
+        }
+
+        .hovereffect:hover h2 {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -webkit-transform: translate3d(-50%,-50%,0) scale3d(0.8,0.8,1);
+        transform: translate3d(-50%,-50%,0) scale3d(0.8,0.8,1);
+        }
+
+        .hovereffect a.info {
+        display: inline-block;
+        text-decoration: none;
+        padding: 7px 14px;
+        text-transform: uppercase;
+        color: #fff;
+        border: 1px solid #fff;
+        margin: 50px 0 0 0;
+        background-color: transparent;
+        }
+
+        .hovereffect a.info:hover {
+        box-shadow: 0 0 5px #fff;
+        }
+
+        .hovereffect h2,
+        .hovereffect p {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+        transition: opacity 0.35s, transform 0.35s;
+        -webkit-transform: translate3d(-50%,-50%,0);
+        transform: translate3d(-50%,-50%,0);
+        -webkit-transform-origin: 50%;
+        -ms-transform-origin: 50%;
+        transform-origin: 50%;
+        background-color: transparent;
+        margin: 0px;
+        padding: 0px;
+        }
+
+        .hovereffect .overlay:before {
+        position: absolute;
+        /* top: 20%;
+        left: 50%;
+        width: 40%;
+        height: 60%; */
+        border: 2px solid #fff;
+        content: '';
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+        transition: opacity 0.35s, transform 0.35s;
+        -webkit-transform: translate3d(-50%,-50%,0) rotate3d(0,0,1,-45deg) scale3d(0,0,1);
+        transform: translate3d(-50%,-50%,0) rotate3d(0,0,1,-45deg) scale3d(0,0,1);
+        -webkit-transform-origin: 50%;
+        -ms-transform-origin: 50%;
+        transform-origin: 50%;
+        }
+
+        .hovereffect p {
+        width: 20%;
+        text-transform: none;
+        font-size: 15px;
+        line-height: 2;
+        }
+
+        .hovereffect p a {
+        color: #fff;
+        }
+
+        .hovereffect p a:hover,
+        .hovereffect p a:focus {
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        }
+
+        .hovereffect  a i {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+        transition: opacity 0.35s, transform 0.35s;
+        padding: 0px 5px;
+        }
+
+        .hovereffect p a:first-child i {
+        -webkit-transform: translate3d(-60px,-60px,0);
+        transform: translate3d(-60px,-60px,0);
+        }
+
+        .hovereffect p a:nth-child(2) i {
+        -webkit-transform: translate3d(60px,-60px,0);
+        transform: translate3d(60px,-60px,0);
+        }
+
+        .hovereffect p a:nth-child(3) i {
+        -webkit-transform: translate3d(-60px,60px,0);
+        transform: translate3d(-60px,60px,0);
+        }
+
+        .hovereffect p a:nth-child(4) i {
+        -webkit-transform: translate3d(60px,60px,0);
+        transform: translate3d(60px,60px,0);
+        }
+
+        .hovereffect:hover .overlay:before {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        background-color: rgba(0,0,0,0.2);
+        -webkit-transform: translate3d(-50%,-50%,0) rotate3d(0,0,1,-135deg) scale3d(1,1,1);
+        transform: translate3d(-50%,-50%,0) rotate3d(0,0,1,-135deg) scale3d(1,1,1);
+        }
+
+        .hovereffect:hover p i:empty {
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+        filter: alpha(opacity=100);
+        }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <h3 style="text-align: center;">FOLLOW US</h3>
+        <div >
+            <div class="hovereffect">
+                <img class="img-responsive" src="/images/follow3.jpg" alt="" >
+                    <div class="overlay">
+                        <h2>Follow Us</h2>
+                        <p>
+                            <a href="https://web.facebook.com/" onclick="return confirm('Are You Sure?')">
+                                <i style="font-size: 40px;" class="fa fa-facebook" ></i>
+                            </a>
+                            <a href="#">
+                                <i style="font-size: 40px;" class="fa fa-instagram"></i>
+                            </a>
+                           
+                        </p>
+                    </div>
+            </div>
+        </div>
+     </div>
+    </body>
+</html>

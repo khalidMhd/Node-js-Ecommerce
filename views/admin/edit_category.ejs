@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+    <script src="https://cdn.ckeditor.com/4.9.1/standard/ckeditor.js"></script>
+
+  </head>
+  <body>
+    <% include adminHeader %> 
+
+        </div>
+      <!-- entery form -->
+      <% if(success != "") { %>
+        <div class="alert alert-success">
+        
+          <strong>Success!</strong> <%= success %> 
+         <% } %>
+        </div>
+
+        <div class="container">
+          <a class="btn btn-info" href="/admin/ViewCategory" >View Captegory</a>
+        
+
+    <h1 style="text-align: center;">Update Category</h1>
+   
+    <div class="panel panel-info">
+      <!-- <div class="panel-heading">
+          <div class="panel-title">Category List</div>
+      </div>   -->
+      <div class="panel-body" >
+          <form action="/admin/update-category/<%= categoryRecord._id %>" class="form-horizontal" method="post"  role="form"  enctype="multipart/form-data">
+              
+              <div id="signupalert" style="display:none" class="alert alert-danger">
+                  <p>Error:</p>
+                  <span></span>
+              </div>
+                  
+              <div class="form-group">
+                  <label for="categoryName" class="col-md-3 control-label">Category Name</label>
+                  <div class="col-md-9">
+                      <input type="text" class="form-control" name="categoryName" placeholder="Enter Category Name" value="<%= categoryRecord.name %> " required>
+                  </div>
+              </div>
+                
+              <div class="form-group">
+                  <label for="categorydetails" class="col-md-3 control-label">Category Details</label>
+                  <div class="col-md-9">
+                    <textarea type="text" class="form-control" name="categorydetails" placeholder=" Enter Details" id="editor" cols="30" rows="10"><%= categoryRecord.details %></textarea>
+                  </div>
+              </div>
+
+                <div class="form-group">
+                  <label for="icode" class="col-md-3 control-label" > Category Image</label>
+                  <div class="col-md-9">
+                      <input type="file" class="form-control" name="file" value="<%= categoryRecord.image %>" required>
+                  </div>
+              </div> 
+
+              <input type="hidden" name="id" value="<%= categoryRecord._id %> ">
+
+              <div class="form-group">
+                  <!-- Button -->                                        
+                  <div class="col-md-offset-3 col-md-9">
+                  <input type="submit" name="submit" value="Update Captegory" class="btn btn-primary">   
+                  </div>
+              </div>
+          </form>
+       </div>
+  </div>
+</div>
+</div>
+  
+<script>
+  CKEDITOR.replace( 'editor' );
+</script>
+  <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+
+</body>
+</html>

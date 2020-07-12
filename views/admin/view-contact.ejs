@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    </head>
+<body>
+  <% include adminHeader %> 
+  <script>
+    function myFunction() {
+      var input, filter, table, tr, td, i;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+    </script>
+  <div class="container">
+    <input class="w3-input w3-border w3-padding" type="text" placeholder="Search for names.." id="myInput" onkeyup="myFunction()">
+  <table class="table" id="myTable">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Mobile</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th>
+
+      </tr>   
+    </thead>
+    <tbody>
+
+        <% if(contactRecord.length > 0) {%> 
+            <% contactRecord.forEach(function(data){ %> 
+      <tr>
+        <th > <%= data.counter %>  </th>
+        <td> <%= data.name %> </td>
+        <td> <%= data.mobile %> </td>
+        <td> <%= data.subject %> </td>
+        <td> <%= data.created_at %> </td>
+        <th>
+            <a type="button" data-toggle="modal" data-target="#myModal<%= data._id  %> "> 
+                <i class="fa fa-eye" style="font-size:large; color: black;"></i>
+            </a>   
+            <a class="btn btn-danger " href="/admin/viewContact/delete/<%=data._id %>" onclick="return confirm('Are you Sure?')"> <i class="fa fa-trash"></i> </a>    
+        </th>
+
+      </tr>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal<%= data._id %>" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                  <h4 class="modal-title" style="text-align: center;"><b><%= data.name %></b></h4>
+                </div>                    
+            
+                <div >
+                    <div class="modal-body">
+                    <b>Subject</b>  <%= data.subject %>
+                    </div>
+
+                    <div class="modal-body">
+                        <b>Message</b> <%= data.message %>
+                    </div>
+
+                    <div class="modal-body">
+                        <b>Email</b> <%= data.email %>
+                    </div>
+            </div>
+                    <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                
+              </div>
+
+      <% }) %> 
+    <% } else { %> 
+        <h3 style="text-align: center;"> No Order Yet!</h3>
+    <% } %> 
+    </tbody>
+  </table>
+  </div>
+        <!-- pagination ejs -->
+        <div class="container">
+          <% if (pages > 0) { %>
+            <ul class="pagination text-center">
+                <% if (current == 1) { %>
+                    <li class="disabled"><a>First</a></li>
+                <% } else { %>
+                    <li><a href="/admin/viewContact/1">First</a></li>
+                <% } %>
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li class="disabled"><a>...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <li class="active"><a><%= i %></a></li>
+                    <% } else { %>
+                        <li><a href="/admin/viewContact/<%= i %>"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <li class="disabled"><a>...</a></li>
+                    <% } %>
+                <% } %>
+                <% if (current == pages) { %>
+                    <li class="disabled"><a>Last</a></li>
+                <% } else { %>
+                    <li><a href="/admin/viewContact/<%= pages %>">Last</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+      </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+   <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+    <style>
+      header{
+       
+         background-image: url('images/background.png') ;
+         background-repeat: no-repeat; 
+         background-size:cover;
+      }
+
+       #DIV {
+         margin-top: 100px;
+       /* text-align: center;
+       width: 400px;
+       height: 100px;  */
+      animation: move 3s infinite;
+    }
+
+    @keyframes move {
+    50% {font: 40px bold;}
+    }  
+    </style>
+  </head>
+
+  <body>
+    <header>
+    <% include client/header %> 
+    <div id="DIV" class="container">
+      <h1 >TRADE <br> YOUR OLD PHONE <br> & BUY NEW</h1>
+    </div>
+  </header>
+ 
+  <main>
+    <% include client/view-category %> 
+
+    <div class="container">
+      <% include client/latestProduct %> 
+    </div>
+
+    <div class="container">
+      <% include follow %> 
+    </div>
+  </main>
+    
+    <footer>
+      <% include client/footer %> 
+    </footer>
+    <% include client/action_button %> 
+
+  </body>
+</html>

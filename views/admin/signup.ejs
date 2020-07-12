@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    
+    
+    <!-- login_form -->
+    <h2 style="text-align: center;" ><%= title %></h2>
+    <div class="container">
+      <div class="row">
+        
+      <div id="signupbox" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+
+        <div class="panel-heading">
+          <div class="panel-title">SignUp</div>
+          </div>  
+
+          <div class="panel-body" >
+            
+              <% if(msg!= '') { %> 
+                <p style="text-align: center;">  <%= msg %> </p>
+              <% } %> 
+            
+
+            <form action="/admin/signup" id="EmployeeForm" class="form-horizontal" method="post"  role="form">
+                          
+              <div id="signupalert" style="display:none" class="alert alert-danger">
+                <p>Error:</p>
+                  <span></span>
+              </div>
+                              
+              <div class="form-group">
+                <label for="username" class="col-md-3 control-label">User Name</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="uname" placeholder="Enter Your User Name" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="col-md-3 control-label">Email</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="email" placeholder="Enter Your User Email" required>
+                </div>
+              </div>
+                            
+              <div class="form-group">
+                <label for="password" class="col-md-3 control-label">Password</label>
+                <div class="col-md-9">
+                  <input type="password" class="form-control" name="password" placeholder="Enter Your Password" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confpassword" class="col-md-3 control-label">Confirm Password</label>
+                <div class="col-md-9">
+                  <input type="password" class="form-control" name="confpassword" placeholder="Enter Your confirm Password" required>
+                </div>
+              </div>
+             
+              <div class="form-group">
+                <!-- Button -->                                        
+                <div class="col-md-offset-3 col-md-9">
+                <input type="submit" name="submit" value="Signup" class="btn btn-primary">   
+                </div>
+              </div> 
+
+              <p>View Account <a href="/admin/viewAccount"> ViewAccount</a></p>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  </body>
+</html>

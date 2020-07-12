@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %> </title>
+    </head>
+    <body>
+        <% include header %> 
+        <div class="container">
+            <h1>My Shoping</h1>
+            <% if(userOrder.length > 0){ %>
+                <% userOrder.forEach(function (data) { %>
+                    <% data.product.forEach(function(rec){ %> 
+                        <table  class="table">
+                            <tr>
+                                <td> 
+                                    <img src="/uploads/<%= rec.images[0] %>" alt="cImage" >
+                                </td>
+                    
+                                <th><b>Brand: </b> </th>
+                                <td> <%= rec.brand %> </td>
+
+                                <th><b>Price</b></th>
+                                <td><%= rec.price %> </td>
+
+                                <th><b>Color</b></th>
+                                <td><%= rec.color %> </td>
+                              </tr>
+                        </table>
+                            
+                        
+                    <% }) %> 
+                <% }) %> 
+
+            <% } else{ %> 
+                <h4 style="text-align: center;">No Shoping!</h4>
+            <% } %> 
+        </div>
+        <% include footer %> 
+    </body>
+</html>

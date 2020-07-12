@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %> </title>    
+
+    </head>
+    <body>
+        <% include header %> 
+        <div class="container">
+        
+        <% if(userRecord.length > 0){ %> 
+            <table  class="table">
+                <% userRecord.forEach(function(data) { %>
+                    <a data-toggle="modal" class="btn btn-primary" data-target="#myModal<%=data._id %>">
+                        Edit Profile
+                      </a>                    
+                      <tr>
+                        <th>UserName</th>
+                         <td><%= data.username %> </td>
+                    </tr>
+
+                    <tr>
+                        <th>Full Name</th>
+                        <td><%= data.fName %> </td>
+                    </tr>
+
+                    <tr>
+                        <th>Email</th>
+                        <td><%= data.email %> </td>
+                    </tr>
+
+                    <tr>
+                        <th>Phone</th>
+                        <td><%= data.phone %> </td>
+                    </tr>
+
+                    <tr>
+                        <th>City</th>
+                        <td><%= data.city %> </td>
+                    </tr>
+
+                    <tr>
+                        <th>Address</th>
+                        <td><%= data.address %> </td>
+                    </tr>
+
+                    <tr>
+                        <th>Created_at</th>
+                        <td><%= new Date(data.created_at).toLocaleString() %> </td>
+                    </tr>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal<%=data._id %>" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+              <h4 class="modal-title" style="text-align: center;"><b><%= data.fName %> </b></h4>
+            </div>
+
+            <div>
+              <div class="modal-body">
+                <form action="/edit-profile/<%=data._id%>" method="POST">
+                  <div class="form-group">
+                    <b>Full Name: </b> <br>
+                    <input name="fname" type="text" value="<%= data.fName %> "> <br>
+                    <b>Phone Number: </b> <br>
+                    <input name="phone" type="text" value="<%= data.phone %> "> <br>
+                    <b>City: </b> <br>
+                    <input name="city" type="text" value="<%= data.city %> "> <br>
+                    <b>Address: </b> <br>
+                    <input name="address" type="text" value="<%= data.address %> ">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+                    
+                    
+               <% }) %> 
+            </table>
+        <% } else{%>
+            <h4>Account not created</h4>
+        <% } %>  
+    </div>
+    <% include footer %> 
+    </body>
+</html>

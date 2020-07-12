@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title><%= title %> </title>    
+
+    <style>
+    
+    </style>
+
+    </head>
+    <body>
+        <% include header %> 
+        <script>
+          function changeImage(image) {
+            console.log("Image Clicked: ", image)
+            document.getElementById('mainImage').src = image;
+          }
+        </script>
+
+        <div class="container">
+            <%if (prodectRecord.length > 0) {%>
+                <% for (var i = 0; i < prodectRecord.length; i++){%>
+                    <h3><%= prodectRecord[i].name %> </h3>
+                    <div class="img-magnifier-container" style="float: left;">
+                        <img id="mainImage" src="/uploads/<%= prodectRecord[i].images[0] %>" alt="cImage" style="width:400px;max-height: 500px; margin:5px auto;">
+                    
+                        <div>
+                          <% prodectRecord[i].images.forEach(function(img) { %> 
+                            <img src="/uploads/<%= img %>" onclick="changeImage(this.src)" alt="cImage" style="height: 50px; width:100px;margin:5px auto;">
+                         <% }) %>
+                        </div>
+                      </div>
+
+                    <div> 
+                      <table style="width:50%; float:right;" class="table">
+                        <tr>
+                          <th><b>Brand: </b> </th>
+                          <td> <i class="fa fa-mobile-phone" style="font-size: x-large;"></i>
+                            <%= prodectRecord[i].brand %></td>
+                        </tr>
+
+                        <tr>
+                          <th> <b> Warranty: </b> </th>
+                          <td> <img src="/images/warranty.png" style="width: 6%;" alt="PTA approvet"> <%= prodectRecord[i].warranty %> </td>
+                        </tr>
+
+                        <tr>
+                          <th><b> PTA: </b> </th>
+                          <td> <img src="/images/pta.png" style="width: 6%;" alt="PTA approvet"> <%= prodectRecord[i].pta %></td>
+                        </tr>
+
+                        <tr>
+                          <th><b> Price: </b> </th>
+                          <td> <i class="fa fa-money" style="font-size: large;"></i>
+                            <%= prodectRecord[i].price %> </td>
+                        </tr>
+
+                        <tr >
+                          <th></th>
+                          <td style="margin-top: 50px;">
+                            <a href="/buy-product/<%= prodectRecord[i]._id %>" type="button" class="btn btn-info">Order Now</a>
+                        
+                            <a href="https://wa.me/534543345?text=I%20am%20interested%20in%20your%20 <%= prodectRecord[i].brand %> " onclick="return confirm('Are You Sure?')">
+                                <i class="fa fa-whatsapp my-float " style="color:green; font-size: xx-large;"></i>
+                            </a>
+                            <a href="/add/<%= prodectRecord[i]._id  %> "  role="button">
+                              <i style=" font-size: xx-large;" class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+
+
+                      
+                      
+                    </div>
+                  </div>
+                      <div class="container">
+                        <h3>Specificatin</h3>
+                        <table style="width:50%;" class="table">
+                          <tr>
+                            <th> <b>Brand: </b> </th>
+                            <td> <%= prodectRecord[i].brand %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> RAM: </b> </th>
+                            <td> <%= prodectRecord[i].ram %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> Rear Camera: </b> </th>
+                            <td> <%= prodectRecord[i].rearcamera %> </td>
+                          </tr>
+
+                          <tr> 
+                            <th> <b> Font Camera: </b> </th> 
+                           <td> <%= prodectRecord[i].fontcamera %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> Battery: </b> </th>
+                            <td> <%= prodectRecord[i].battery %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> Sim Support: </b> </th>
+                            <td> <%= prodectRecord[i].simSupport %> </td>
+                          </tr>
+
+                          <tr>
+                            <th><b> Color: </b></th>
+                            <td> <%= prodectRecord[i].color %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> Operating System: </b> </th>
+                            <td> <%= prodectRecord[i].operatingSystem %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> Warranty: </b> </th>
+                            <td> <%= prodectRecord[i].warranty %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> PTA: </b> </th>
+                            <td> <%= prodectRecord[i].pta %> </td>
+                          </tr>
+
+                          <tr>
+                            <th> <b> Price: </b> </th>
+                            <td> <%= prodectRecord[i].price %> </td>
+                          </tr>
+
+                        </table>
+                      </div>
+
+                   <% } %> 
+            <% } else { %>
+                <h3 style="text-align: center;"> Product Not Found </h3>
+            <% } %>   
+
+        <hr style="height:2px;border-width:0;color:rgb(158, 149, 149);background-color:rgb(151, 151, 189)">
+        
+        <% include footer %> 
+
+    </body>
+</html>

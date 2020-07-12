@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' /> 
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+        <style>
+          #my {
+            width: auto;
+             height: auto;
+             border: 5px solid coral;
+             animation: mymove 5s infinite;
+          }
+
+          @keyframes mymove {
+            50% {border-color: rgb(173, 174, 230);}
+          }
+        </style>
+      </head>
+<body>
+  <div id="my" style="background-color: lightblue; height: 50px; text-align: center; font-size: 17px;">
+      
+
+    <i class="fa fa-phone">Order By phone/whatsapp: +92 23*** </i> 
+     <span > 
+       <!-- <a href="/contact-us" class="btn btn-info">Contact Us</a>  -->
+       
+         <a href="https://www.google.com/maps/@33.894468,73.3791128,16.63z" style="float: right; margin-left: 10px;" onclick="return confirm('Are You Sure?')"> 
+          <i class="fa fa-map-marker ">Find A Store</i> 
+        </a>
+        
+       <a href="/cart" style="float: right; color: black;"><i style="font-size: x-large;" class="fa fa-shopping-cart" aria-hidden="true"></i>
+
+        <% if(session.cart ){ %>   
+          <span class="badge badge-light"> <%= session.cart.totalItems %> </span>              
+          <% } %> 
+        </a>
+     </span> 
+ </div>
+    <div class="container">
+      <nav class="navbar navbar-default font-weight-bold" >
+        <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mobile</a>
+          </div>
+      
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Brands <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <% categoryRecord.forEach(function(data){ %>
+                  <li><a href="/Brand/<%= data.name  %> "><%= data.name  %> </a></li>
+                  <% }) %> 
+                </ul>
+              </li>
+              <li><a href="/contact-us">Contact Us</a></li>
+              <li><a href="/about-us">About Us</a></li>
+
+              <% if (loginUserInfo == null) { %>
+               <li> <a style="float: left;" href="/login">Login</a> </li>
+              <% } else { %> 
+                
+              
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li>  
+                    <% userData.forEach(function(data){ %> 
+                    <a class="dropdown-item" href="user-Profile/<%=loginUserInfo%>">
+                      <h4 style="text-align: center;"><%= data.username%> </h4> 
+                    </a>
+                    <% }) %> 
+                      <a class="dropdown-item" href="/user-Profile/<%=loginUserInfo%>">Profile</a>
+                    <a class="dropdown-item" href="/my-order">My Orders</a>
+                    <a class="dropdown-item" style="color: brown;" href="/Userlogout">Logout</a></li>
+                </ul>
+              </li>
+              <% } %> 
+    
+            </ul>
+            <form class="navbar-form navbar-left" action="/search" method="POST">
+              <div class="form-group">
+                <input type="text" id="searchName" class="form-control" type="search" name="fltrName"  placeholder="Enter Brand" required>
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+
+          </div><!-- /.navbar-collapse -->
+
+         
+        </div>
+        </div><!-- /.container-fluid -->
+      </nav>
+
+
+            <script>
+      $(function(){
+    $('#searchName').autocomplete({
+    source: function(req,res){
+
+      $.ajax({
+        url:"autocompleteSearch/",
+        dataType:"jsonp",
+        type:"GET",
+        data:req,
+        success: function(data){
+          res(data)
+
+        },
+        error: function(err){
+          console.log(err.status);
+        }
+      });
+    },
+
+    minLength:1,
+    select: function(event,ui){
+      if(ui.item){
+        $('#searchName').val(ui.item.label);
+      }
+    }
+
+
+
+    });
+
+      });
+      </script> 
+
+
+</div>
+</body>
+</html>

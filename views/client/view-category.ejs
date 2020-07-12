@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= title %> </title>
+
+  <link rel='stylesheet' href='/stylesheets/style.css' /> 
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+ <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script> 
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>  -->
+   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+<style>
+img:hover {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div >
+      <h3 style="text-align: center;" >OUR BRANDS</h3>
+      <!-- <hr style=" border: 1.6px solid rgb(122, 103, 134); margin-right: 500px; margin-left: 510px;"> -->
+
+    </div>
+    <div class="row">
+        <%if (categoryRecord.length >0){ %>
+          <% categoryRecord.forEach(function(row){ %>
+            <div class="col-md-2">
+              <% if(row.image){ %>
+              <img src="./uploads/<%= row.image %>" alt="image" style="max-width:200px;height: 120px; margin:5px auto; ">
+              <% } %> 
+              <a href="/Brand/<%= row.name %> ">
+              <h4 class="title" ><%= row.name %> </h4>
+            </a>
+            </div>
+        <% }) } else{ %>
+          <h2>
+            <td colspan="6">No Record Found</td>
+          </h2>
+        <% } %>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html> 

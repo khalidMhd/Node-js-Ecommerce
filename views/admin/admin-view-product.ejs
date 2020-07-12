@@ -1,0 +1,168 @@
+
+<!------ Include the above in your HEAD tag ---------->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %> </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    
+        <style>
+  .box6{background:#000;position:relative}
+.box6:after{background:rgba(0,0,0,.7);position:absolute;top:0;left:-30%;bottom:0;right:70%;transform:skew(20deg) translateX(-75%)}
+.box6:hover:after{transform:skew(20deg) translateX(0)}
+.box6 img{width:100%;height:auto}
+.box6:hover img{opacity:.5}
+.box6 .box-content{padding:20px;text-align:right;position:absolute;top:0;right:0;z-index:1}
+.box6 .icon,.box7 .icon{padding:0;list-style:none}
+.box10 .icon li a,.box11,.box12,.box13,.box14,.box6 .icon li a,.box7,.box7 .icon li a,.box8,.box8 .icon li a{text-align:center}
+.box6 .title{font-size:20px;font-weight:900;color:#fff;margin:0 0 10px;transform:scale(0)}
+.box6:hover .title{transform:scale(1)}
+.box6 .icon li,.box6 .post{opacity:0;transform:translateX(40px);transition:all .35s ease 0s}
+.box6 .post{display:block;font-size:14px;color:#fff;margin-bottom:5px}
+.box6 .icon{display:inline-block;margin:0}
+.box6:hover .icon li,.box6:hover .post{opacity:1;transform:translateX(0)}
+.box6:hover .icon li:first-child{transition-delay:.1s}
+.box6:hover .icon li:nth-child(2){transition-delay:.2s}
+.box6 .icon li a{display:block;width:35px;height:35px;line-height:35px;background:#fff;font-size:18px;color:#605f5f;margin-bottom:5px;transition:all .35s ease}
+.box6 .icon li a:hover{background:#605f5f;color:#fff}
+@media only screen and (max-width:990px){.box6{margin-bottom:30px}
+}
+        </style>
+    </head>
+    <body>
+        <% include adminHeader %> 
+        <!------------------ Hover Effect Style : Demo - 6 --------------->
+       <div class="container mt-40">
+           <a href="/admin/add-product" class="btn btn-info">Add Product</a>
+        <div class="row mt-30">
+            <%if (prodectRecord.length >0){ %>
+                <% for (var i = 0; i < prodectRecord.length; i++) { %>
+            <div class="col-md-3">
+                <div class="box6">
+                    <img src="/uploads/<%= prodectRecord[i].images[0] %> " alt="prodect" style="height: 300px;">
+                    <div class="box-content">
+                        <h3 class="title"><%= prodectRecord[i].brand %> </h3>
+                        <span class="post"> <b> PKR: </b><%= prodectRecord[i].price  %> </span>
+                        <ul class="icon">
+                            <li>
+                                <a type="button" data-toggle="modal" data-target="#myModal<%= prodectRecord[i]._id  %> "> 
+                                    <i class="fa fa-eye" style="font-size:xx-large; color: black;"></i>
+                                </a> 
+                            </li>
+                            <li>
+                                <a style="height:40px;" class="btn btn-danger " href="/admin/ViewProduct/delete/<%=prodectRecord[i]._id %>" onclick="return confirm('Are you Sure?')"> <i class="fa fa-trash"></i> </a>
+                            </li>
+
+                            <li>
+                                <a style="height:40px;" class="btn btn-info " href="/admin/update-product/edit/<%=prodectRecord[i]._id %>"> <i class="fa fa-edit"></i> </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                    <h3 style="text-align: center;" ><%= prodectRecord[i].brand %> </h3>
+                </div>
+              <!-- Modal -->
+              <div class="modal fade" id="myModal<%= prodectRecord[i]._id %>" role="dialog">
+                <div class="modal-dialog">
+                
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                      <h4 class="modal-title" style="text-align: center;"><b><%= prodectRecord[i].brand %></b></h4>
+                    </div>
+                    <div style="width: 100%;">
+                    <div style="width: 50%; float: left;">
+                        <div class="modal-body">
+                            <img src="/uploads/<%= prodectRecord[i].images[0] %>" alt="cImage" style="width:250px;margin:5px auto;">
+                        </div>
+                    </div>
+                   
+                    <div style="width: 50%; float: right;">
+                        <div class="modal-body">
+                        <b>PKR</b>  <%= prodectRecord[i].price %>
+                        </div>
+
+                        <div class="modal-body">
+                        <b>Battery</b> <%= prodectRecord[i].battery %>
+                        </div>
+
+                        <div class="modal-body">
+                            <b>RAM</b> <%= prodectRecord[i].ram %>
+                        </div>
+
+                        <div class="modal-body">
+                            <b>ROM</b> <%= prodectRecord[i].rom %>
+                        </div>
+
+                        <div class="modal-body">
+                            <b>Color</b> <%= prodectRecord[i].color %>
+                        </div>
+
+                        <div class="modal-body">
+                            <b>Warranty: </b> <%= prodectRecord[i].warranty %>
+                        </div>
+                    </div>
+                </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    
+                  </div>
+                  
+                </div>
+              </div>
+            <% } }else{ %>
+                <h2>
+                  <td colspan="6">No Record Found</td>
+                </h2>
+              <% } %>
+        
+        </div>
+    </div>
+
+      <!-- pagination ejs -->
+      <div class="container">
+        <% if (pages > 0) { %>
+          <ul class="pagination text-center">
+              <% if (current == 1) { %>
+                  <li class="disabled"><a>First</a></li>
+              <% } else { %>
+                  <li><a href="/admin/ViewProduct/1">First</a></li>
+              <% } %>
+              <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+              <% if (i !== 1) { %>
+                  <li class="disabled"><a>...</a></li>
+              <% } %>
+              <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                  <% if (i == current) { %>
+                      <li class="active"><a><%= i %></a></li>
+                  <% } else { %>
+                      <li><a href="/admin/ViewProduct/<%= i %>"><%= i %></a></li>
+                  <% } %>
+                  <% if (i == Number(current) + 4 && i < pages) { %>
+                      <li class="disabled"><a>...</a></li>
+                  <% } %>
+              <% } %>
+              <% if (current == pages) { %>
+                  <li class="disabled"><a>Last</a></li>
+              <% } else { %>
+                  <li><a href="/admin/ViewProduct/<%= pages %>">Last</a></li>
+              <% } %>
+          </ul>
+      <% } %>
+    </div>
+
+    <footer>
+      </footer>
+    
+    </body>
+</html>

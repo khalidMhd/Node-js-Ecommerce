@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    </head>
+<body>
+  <% include adminHeader %> 
+
+  <div class="container">
+      <a class="btn btn-info" href="/admin/signup">Add Account</a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        <% if(adminAcountRecord.length > 0) {%> 
+            <% adminAcountRecord.forEach(function(data){ %> 
+      <tr>
+        <th > 1 </th>
+        <td> <%= data.username %> </td>
+        <td> <%= data.email %> </td>
+        <td> <%= data.created_at %> </td>
+        <th> 
+            <a class="btn btn-danger " href="/admin/viewAccount/delete/<%=data._id %>" onclick="return confirm('Are you Sure?')"> <i class="fa fa-trash"></i> </a>    
+        </th>
+
+      </tr>       
+
+      <% }) %> 
+    <% } else { %> 
+        <h3 style="text-align: center;"> No Order Yet!</h3>
+    <% } %> 
+    </tbody>
+  </table>
+  </div>
+     
+</body>
+</html>

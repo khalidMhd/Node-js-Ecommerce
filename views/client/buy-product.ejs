@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title><%= title %> </title>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script>// <![CDATA[
+        $(document).ready(function(){
+            var from,to,subject,text;
+            $("#send_email").click(function(){     
+                to=$("#to").val();
+                subject=$("#subject").val();
+                text=$("#content").val();
+                $("#message").text("Sending E-mail...Please wait");
+                $.get("http://localhost:3000/send",{to:to,subject:subject,text:text},function(data){
+                if(data=="sent")
+                {
+                    $("#message").empty().html("Email is been sent at "+to+" . Please check inbox!");
+                }
+        
+        });
+            });
+        });
+        </script>
+    </head>
+
+    <body>
+    <% include header %>  
+
+    <% if(success != "") { %>
+      <div class="alert alert-success">
+      
+        <strong>Success!</strong> <%= success %> 
+       <% } %>
+      </div>
+  <div class="container">
+  <section class="mb-4">
+
+  <h2 class="h1-responsive font-weight-bold text-center my-4">Buy Product</h2>
+
+  <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within
+      a matter of hours to help you.</p>
+
+  <div class="row">
+      <div class="col-md-9 mb-md-0 mb-5">
+          <form id="contact-form" name="contact-form" action="/buy-product" method="POST">
+
+              <div class="row">
+
+                  <div class="col-md-6">
+                      <div class="md-form mb-0">
+                        <label for="name" class="">Your name</label>
+                          <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+                      </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                      <div class="md-form mb-0">
+                        <label for="email" class="">Your email</label>
+                          <input type="email" id="to" name="email" class="form-control" placeholder="Enter yout email address" required>
+                      </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="md-form mb-0">
+                      <label for="email" class="">Your Mobile no.</label>
+                        <input type="number" id="mble" name="mobile" class="form-control" placeholder="Enter your mobile number" required>
+                    </div>
+                </div>
+                  
+                  <div class="col-md-4">
+                    <div class="md-form mb-0">
+                          <label for="subject" class="">City</label>
+                          <input  type="text" name="subject" class="form-control" placeholder="Enter your city name" required>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="md-form mb-0">
+                        <label for="subject" class="">Address</label>
+                          <input  type="text" name="address" class="form-control" placeholder="Enter your address "required>
+                  </div>
+              </div>
+
+              <div>
+
+                <% productRecord.forEach(function(data){ %> 
+                  <input  type="hidden" class="form-control" name="brand" value="<%= data.brand %>">
+                  <input type="hidden" class="form-control" name="color" value="<%= data.color %>">
+                  <input type="hidden" class="form-control" name="price" value="<%= data.price %>">
+                  <input id="content" type="hidden" class="form-control" 
+                  value=" Brand: <%= data.brand %>, Price: <%= data.price %>, Color: <%= data.color %>  ">
+
+                  <% }) %> 
+                  </div>  
+            </div>
+             
+              <div class="row">
+
+             
+                  <div class="col-md-12">
+                      <div class="md-form">
+                        <label for="message">Your message</label>
+                          <textarea type="text" name="message" rows="4" class="form-control md-textarea" required></textarea>
+                      </div>
+
+                  </div>
+              </div>
+              
+              <div class="form-group">
+                <div style="text-align: center; margin-top:10px;">
+                <input id="send_email" type="submit" name="submit" value="Order Now" class="btn btn-primary btn-lg btn-block">   
+                </div>
+              </div> 
+              <span id="message"></span>
+          </form>
+
+          
+          <div class="status"></div>
+      </div>
+      <div class="col-md-3 text-center">
+        <% for(var i=0; i < productRecord.length; i++){ %> 
+           <div>
+            <img src="/uploads/<%= productRecord[i].images[0] %> " alt="prodect" style="height: 300px;">
+           </div>
+           <p><%= productRecord[i].brand %> </p>
+        </div>
+
+           <table style="width:50%;" class="table">
+            <tr>
+              <th> <b>Brand: </b> </th>
+              <td><%= productRecord[i].brand %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> RAM: </b> </th>
+              <td> <%= productRecord[i].ram %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> Rear Camera: </b> </th>
+              <td> <%= productRecord[i].rearcamera %> </td>
+            </tr>
+
+            <tr> 
+              <th> <b> Font Camera: </b> </th> 
+             <td> <%= productRecord[i].fontcamera %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> Battery: </b> </th>
+              <td> <%= productRecord[i].battery %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> Sim Support: </b> </th>
+              <td> <%= productRecord[i].simSupport %> </td>
+            </tr>
+
+            <tr>
+              <th><b> Color: </b></th>
+              <td> <%= productRecord[i].color %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> Operating System: </b> </th>
+              <td> <%= productRecord[i].operatingSystem %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> Warranty: </b> </th>
+              <td> <%= productRecord[i].warranty %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> PTA: </b> </th>
+              <td> <%= productRecord[i].pta %> </td>
+            </tr>
+
+            <tr>
+              <th> <b> PKR: </b> </th>
+              <td> <%= productRecord[i].price %> </td>
+            </tr>
+
+          </table>
+
+           <% } %> 
+  </div>
+
+</section>
+</div> 
+
+
+<!--Section: Contact v.2-->
+    <% include footer %> 
+  
+</body>
+    
+</html>

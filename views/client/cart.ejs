@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+   <!-- <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  -->
+   
+</head>
+<body>
+    <% include header.ejs %> 
+    <div class="container">
+        <table class=" table">
+            <thead>
+                <tr>
+                    <th> Products</th>
+                    <th> Brand</th>
+                    <th> PKR</th>
+                    <th> Quantity</th>
+                    <th> Action</th>
+                </tr>
+            </thead>
+            <% if(products != '') {%> 
+            <tbody>
+                <% products.forEach(function(data){ %> 
+                <tr>
+                    <td> <img src="/uploads/<%= data.item.images[0] %> " alt="prodect" style="max-width:200px;height: 120px; "></td>
+                    <td> <%= data.item.brand %> </td>  
+                    <td> <%= data.item.price %> </td>
+                    <td>
+                        <a href="/reduce/<%= data.item._id %>" >
+                            <i class="fa fa-minus" aria-hidden="true"></i>
+                        </a>
+
+                        <span class="badge"> Quantity: <%= data.quantity %> </span>
+
+                        <a href="/increment/<%= data.item._id %>">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/remove/<%= data.item._id %>" class="btn btn-default"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                <% }) %>
+              
+            </tbody>
+        </table>
+            <div class="text-right">
+                <strong>Total_Rs: <%= totalPrice %> </strong>
+            </div>
+            <hr>
+            <div class="text-right">
+                <a href="/checkout" type="button" class="btn btn-success">Checkout</a>
+            </div>
+            <% } else {%>
+                <h4 class=" text-center text-info"> Your shopping cart is empty.</h4>
+            <% } %> 
+
+    </div>
+    <% include footer %> 
+</body>

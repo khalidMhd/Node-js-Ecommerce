@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    </head>
+<body>
+  <% include adminHeader %> 
+  
+  <div class="container">
+    <a class="btn btn-info" href="/admin/ViewCategory">View Category
+      <span class="badge badge-light"><%= countCategory %> </span>
+    </a>
+
+    <a class="btn btn-info" href="/admin/ViewProduct">View Product
+      <span class="badge badge-light"><%= countProduct %> </span>
+    </a>
+
+    <a class="btn btn-info" href="/admin/viewOrder">View Order
+      <span class="badge badge-light"><%= countOrder %> </span>
+    </a>
+
+    <a class="btn btn-info" href="/admin/viewContact">View Contact
+      <span class="badge badge-light"><%= countContact %> </span>
+    </a>
+
+    <a class="btn btn-info" href="/admin/viewAccount">View Account
+      <span class="badge badge-light"><%= countSignup %> </span>
+    </a>
+
+  </div>
+
+</body>
+</html>

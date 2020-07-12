@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>// <![CDATA[
+          $(document).ready(function(){
+              var from,to,subject,text;
+              $("#send_email").click(function(){     
+                  to=$("#to").val();
+                  subject=$("#subject").val();
+                  text=$("#content").val();
+                  $("#message").text("Sending E-mail...Please wait");
+                  $.get("http://localhost:3000/send",{to:to,subject:subject,text:text},function(data){
+                  if(data=="sent")
+                  {
+                      $("#message").empty().html("Email is been sent at "+to+" . Please check inbox!");
+                  }
+          });
+              });
+          });
+          </script>
+    </head>
+    <body>
+        <% include header %>
+        <div class="container">
+          <% userRecord.forEach(function(record){ %> 
+            <a data-toggle="modal" class="btn btn-primary" data-target="#myModal<%=record._id %>">
+              Edit shipping details
+            </a>
+        <form id="contact-form" name="contact-form" action="/buy-product" method="POST">
+            <div class="row">
+              
+                
+                <div class="col-md-6">
+                    <div class="md-form mb-0">
+                      <label for="name" class="">Your name</label>
+                        <input type="text" id="name" name="name" class="form-control" value="<%=record.fName  %> " required disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="md-form mb-0">
+                      <label for="email" class="">Your email</label>
+                        <input type="email" id="to" name="email" class="form-control" value="<%= record.email %> " required disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="md-form mb-0">
+                    <label for="email" class="">Your Mobile no.</label>
+                      <input type="text" id="mble" name="mobile" class="form-control" value="<%= record.phone %> " required disabled>
+                  </div>
+              </div>
+
+                <div class="col-md-4">
+                  <div class="md-form mb-0">
+                        <label for="subject" class="">City</label>
+                        <input  type="text" name="subject" class="form-control" value="<%= record.city %> " required disabled>
+                  </div>
+                </div>
+
+              <div class="col-md-4">
+                <div class="md-form mb-0">
+                    <label for="subject" class="">Address</label>
+                    <input  type="text" name="address" class="form-control" value="<%= record.address %> " required disabled>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="md-form">
+                    <label for="message">Your message</label>
+                      <textarea type="text" name="message" rows="4" class="form-control md-textarea" required></textarea>
+                  </div>
+              </div>
+          </div>
+     
+            
+
+            <% products.forEach(function(data){ %>
+                <input type="hidden" name="quantity" value="<%= data.quantity %>">
+                <input id="content" type="hidden" name="quantity" value="<%= data.item._id %>">
+            <% }) %> 
+              <br>
+            <div class="form-group">
+              <div style="text-align: center; margin-top:10px;">
+              <input id="send_email" type="submit" name="submit" value="Order Now" class="btn btn-primary btn-lg btn-block">   
+              </div>
+            </div> 
+            <span id="message"></span>
+        </form>
+                     <!-- Modal -->
+      <div class="modal fade" id="myModal<%=record._id %>" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+              <h4 class="modal-title" style="text-align: center;"><b><%= record.fName %> </b></h4>
+            </div>
+
+            <div>
+              <div class="modal-body">
+                <form action="/edit-orderInfo/<%=record._id%>" method="POST">
+                  <div class="form-group">
+                 
+                    <b>Phone Number: </b> <br>
+                    <input name="phone" type="text" value="<%= record.phone %> "> <br>
+                    <b>City: </b> <br>
+                    <input name="city" type="text" value="<%= record.city %> "> <br>
+                    <b>Address: </b> <br>
+                    <input name="address" type="text" value="<%= record.address %> ">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+          
+          </div>
+      </div>
+        <% }) %> 
+    </div>
+        <% include footer %> 
+    </body>
+</html>
