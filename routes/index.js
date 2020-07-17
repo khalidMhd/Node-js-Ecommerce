@@ -405,8 +405,8 @@ var smtpTransport = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
   auth: {
-      user: "khalidmehmood1880@gmail.com", 
-      pass: "khush1880" // your password
+      user: "", // your emain address
+      pass: "" // your password
   }
 });
 
