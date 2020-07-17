@@ -4,6 +4,10 @@
 **_Admin side_**
 ![wqw](https://user-images.githubusercontent.com/66724840/87241245-721ef480-c43a-11ea-92ee-58ca214fbef7.PNG)
 
+**project Demo**
+https://ecommerce-dem0.herokuapp.com/
+
+
 Demo credentials
 Admin User:
 - User: `admin`
