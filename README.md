@@ -11,7 +11,7 @@ https://ecommerce-dem0.herokuapp.com/
 Demo credentials
 Admin User:
 - User: `admin`
-- Password: `1234`
+- Password: `admin1234`
 
 Customer:
 - User: `user`
