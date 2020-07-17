@@ -12,34 +12,24 @@ var contact = contactModel.find({})
 
 router.use(express.static(__dirname+"./public/"));
 
-
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
-}
-
 var jwt = require('jsonwebtoken');
 
 function checkLoginUser(req, res, next) {
-  var userToken = localStorage.getItem("userToken");
-  try {
-    var decoded = jwt.verify(userToken, 'loginToken');
-  } catch(err) {
+  if(req.session.adminName) {
+  } else{
     res.redirect('/admin')
   }
-  next()
+next()
 }
 
-
   router.get('/',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
         res.render('admin/adminHeader',{title:'Mobile',success:'',loginUser:loginUser})
   })
 
   router.post('/',checkLoginUser, function(req, res, next){
-    var loginUser = localStorage.getItem('loginUser')
-
+    var loginUser = req.session.adminName
     var pages;
     var cat;
 

@@ -17,22 +17,17 @@ router.use(express.static(__dirname+"./public/"));
 
 var bcrypt = require('bcryptjs');
 
-if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
-    localStorage = new LocalStorage('./scratch');
-  }
-  
   var jwt = require('jsonwebtoken');
   
-  function checkLoginUser(req, res, next) {
-    var userToken = localStorage.getItem("userToken");
-    try {
-      var decoded = jwt.verify(userToken, 'loginToken');
-    } catch(err) {
-      res.redirect('/admin/login')
-    }
-    next()
-  }
+  // function checkLoginUser(req, res, next) {
+  //   var userToken = localStorage.getItem("userToken");
+  //   try {
+  //     var decoded = jwt.verify(userToken, 'loginToken');
+  //   } catch(err) {
+  //     res.redirect('/admin/login')
+  //   }
+  //   next()
+  // }
 
   
   router.get('/', function(req,res, next){
@@ -59,8 +54,9 @@ if (typeof localStorage === "undefined" || localStorage === null) {
       var getPassword = data.password;
       if (bcrypt.compareSync(password, getPassword)) {
         var token = jwt.sign({ userId: getUserId }, 'loginToken');
-        localStorage.setItem('userToken', token);
-        localStorage.setItem('loginUser', userName);
+        // localStorage.setItem('userToken', token);
+        // localStorage.setItem('loginUser', userName);
+        req.session.adminName = userName
   
         res.redirect('/admin/dashboard');
       }

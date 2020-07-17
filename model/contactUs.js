@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost:27017/Mobile', {useNewUrlParser: true, useUnifiedTopology: true});
+var Schema = mongoose.Schema
 var conn =mongoose.Collection;
 
 var contactSchma =new mongoose.Schema({

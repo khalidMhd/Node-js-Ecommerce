@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost:27017/Mobile', {useNewUrlParser: true, useUnifiedTopology: true});
 var conn =mongoose.Collection;
+var Schema = mongoose.Schema
 
 var signupSchema = new mongoose.Schema({
     username: {type: String, required: true, index: {unique: true}},

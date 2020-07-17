@@ -15,7 +15,7 @@ var userModel = require('../model/user-signup')
 router.use(express.static(__dirname+"./public/"));
 
   router.get('/', function(req,res, next){
-    var loginUser = localStorage.getItem('loginUserInfo')
+    var loginUser = req.session.userId
 
     var userdata
     userModel.find({_id:loginUser}).exec(function(err,data){
@@ -23,18 +23,17 @@ router.use(express.static(__dirname+"./public/"));
       userdata = data
     })
 
-    var contactData;
-    contact.sort({created_at: -1}).limit(1).exec(function(err,data){
+    contact.sort({created_at: -1}).limit(1).exec(function(err,contactData){
       if(err) throw err
-      contactData = data
-    })
+    
       category.exec(function(err, data){
         res.render('client/contact_us',{title:'Mobile',contactRecord:contactData,categoryRecord:data,success:'',loginUserInfo:loginUser,userData:userdata})
       })
+    })
   })
 
   router.post('/', function(req, res, next){
-    var loginUser = localStorage.getItem('loginUserInfo')
+    var loginUser = req.session.userId
 
     var userdata
     userModel.find({_id:loginUser}).exec(function(err,data){

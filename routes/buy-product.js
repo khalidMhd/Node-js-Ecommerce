@@ -46,7 +46,7 @@ router.use(express.static(__dirname+"./public/"));
   // })
 
   router.post('/', function(req, res, next){   
-    var loginUser = localStorage.getItem('loginUserInfo')
+    var loginUser = req.session.userId
  
     var cat
     category.exec(function(err, data){
@@ -72,12 +72,13 @@ router.use(express.static(__dirname+"./public/"));
       var cart = new Cart(req.session.cart);
       var cartItems= cart.getItems();
       for (var i=0; i< cartItems.length; i++){
-        console.log("CARTTTT "+cartItems[i].item._id)
+        // console.log("CARTTTT "+cartItems[i].item._id)
         productsIDs.push(cartItems[i].item._id)
         buyDetails.quantities.push(cartItems[i].quantity)
       }
+      
       buyDetails.product = productsIDs
-      var loginUser = localStorage.getItem('loginUserInfo')
+      var loginUser = req.session.userId
       buyDetails.user = loginUser
       // console.log(" details: " +buyDetails)
 

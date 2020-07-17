@@ -14,7 +14,7 @@ var signupModel = require('../model/user-signup')
 var signup = signupModel.find({})
 
 router.use(express.static(__dirname+"./public/"));
-
+ 
 var bcrypt = require('bcryptjs');
 
 if (typeof localStorage === "undefined" || localStorage === null) {
@@ -24,13 +24,9 @@ if (typeof localStorage === "undefined" || localStorage === null) {
   
   var jwt = require('jsonwebtoken');
 
-  
   router.get('/', function(req,res, next){
-   
-    
     res.render('client/userLogin',{title:'Mobile',msg:''})
   })
-
 
   router.post('/', function(req, res, next) {
     var userName = req.body.uname;
@@ -45,9 +41,10 @@ if (typeof localStorage === "undefined" || localStorage === null) {
       var getPassword = data.password;
       if (bcrypt.compareSync(password, getPassword)) {
         var token = jwt.sign({ userId: getUserId }, 'userloginToken');
-        localStorage.setItem('userInfoToken', token);
-        localStorage.setItem('loginUserInfo', getUserId);
-        // localStorage.setItem('userProfileId', getUserId)
+        // localStorage.setItem('userInfoToken', token);
+        // localStorage.setItem('loginUserInfo', getUserId);
+        req.session.userId = getUserId
+        // console.log('login userrrrrr'+req.session.userId)
         res.redirect('/');
       }
       else {
@@ -55,7 +52,5 @@ if (typeof localStorage === "undefined" || localStorage === null) {
       }
     }})
   });
-
-  
 
   module.exports = router;

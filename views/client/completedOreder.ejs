@@ -111,7 +111,7 @@
               <%if (productRecord.length >0){ %>
                     <% for (var i = 0; i < productRecord.length; i++) { %>
             <div class="hovereff">
-                <img src="/uploads/<%= productRecord[i].images[0] %> " alt="prodect" style="height: 300px; ">
+                <img src="/uploads/<%= productRecord[i].images[0] %> " alt="prodect" style="height: 300px; width: auto; ">
               <div class="overlay">
                   <a href="/productDetails/<%= productRecord[i]._id %> ">
                     <h2>  <%= productRecord[i].brand %>  </h2>

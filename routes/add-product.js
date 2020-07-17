@@ -19,26 +19,18 @@ var upload = multer({
   storage:Storage
 }).any('file');
 
-
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
-}
-
 var jwt = require('jsonwebtoken');
 
 function checkLoginUser(req, res, next) {
-  var userToken = localStorage.getItem("userToken");
-  try {
-    var decoded = jwt.verify(userToken, 'loginToken');
-  } catch(err) {
+  if(req.session.adminName) {
+  } else{
     res.redirect('/admin')
   }
-  next()
+next()
 }
 
   router.get('/',checkLoginUser, function(req, res, next) {
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
     category.exec(function(err, data){
       if(err) throw err;
@@ -47,7 +39,7 @@ function checkLoginUser(req, res, next) {
   }); 
 
   router.post('/',checkLoginUser,upload, function(req, res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
       var productDetails = new productModel({
         brand: req.body.brand,

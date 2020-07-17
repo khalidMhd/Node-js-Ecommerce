@@ -14,22 +14,7 @@ var contact = contactModel.find({})
 router.use(express.static(__dirname+"./public/"));
 
 
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
-}
-
 var jwt = require('jsonwebtoken');
-
-function checkLoginUser(req, res, next) {
-  var userToken = localStorage.getItem("userToken");
-  try {
-    var decoded = jwt.verify(userToken, 'loginToken');
-  } catch(err) {
-    res.redirect('/admin')
-  }
-  next()
-}
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -42,17 +27,25 @@ var storage = multer.diskStorage({
  
 var upload = multer({ storage: storage }).single('file')
 
-  router.get('/',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+function checkLoginUser(req, res, next) {
+  if(req.session.adminName) {
+  } else{
+    res.redirect('/admin')
+  }
+next()
+}
 
-    category.exec(function(err, data){
-      if(err) throw err
-      res.render('admin/admin-view-category',{title:'Hassan',categoryRecord:data,loginUser:loginUser})
-    })
+router.get("/",checkLoginUser,function(req,res,next){
+  var loginUser = req.session.adminName
+  category.exec(function(err,data){
+    if(err) throw err
+    res.render('admin/admin-view-category',{title:'Mobile',categoryRecord:data, loginUser:loginUser})
+    
   })
+})
 
   router.get('/delete/:id',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
     categoryModel.findByIdAndDelete({_id:req.params.id}).exec(function(err){
     if(err) throw err

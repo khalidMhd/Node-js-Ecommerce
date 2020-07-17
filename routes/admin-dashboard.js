@@ -17,27 +17,19 @@ var accountModel = require('../model/admin-signup')
 var accout = accountModel.find({})
 
 router.use(express.static(__dirname+"./public/"));
-
-
-if (typeof localStorage === "undefined" || localStorage === null) {
-      var LocalStorage = require('node-localstorage').LocalStorage;
-      localStorage = new LocalStorage('./scratch');
-    }
     
     var jwt = require('jsonwebtoken');
     
     function checkLoginUser(req, res, next) {
-      var userToken = localStorage.getItem("userToken");
-      try {
-        var decoded = jwt.verify(userToken, 'loginToken');
-      } catch(err) {
-        res.redirect('/admin')
-      }
+        if(req.session.adminName) {
+        } else{
+          res.redirect('/admin')
+        }
       next()
     }
 
   router.get('/',checkLoginUser, function(req,res, next){
-      var loginUser = localStorage.getItem('loginUser')
+      var loginadmin = req.session.adminName
 
       categoryModel.countDocuments({}).exec(function(err,countCategory){
             if(err) throw err
@@ -55,7 +47,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
                                 countOrder:countOrder,
                                 countContact:countContact,
                                 countSignup:countSignup,
-                                loginUser:loginUser,
+                                loginUser:loginadmin,
                               })
                             })
                         })

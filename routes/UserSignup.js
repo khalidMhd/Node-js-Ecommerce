@@ -15,12 +15,6 @@ var signup = signupModel.find({})
 
 router.use(express.static(__dirname+"./public/"));
 
-
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
-}
-
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 
@@ -51,7 +45,6 @@ function checkEmail(req, res, next){
     })
   }
   
-
   router.get('/',function(req,res, next){
         res.render('client/userSignup',{title:'Mobile',msg:''})
   })

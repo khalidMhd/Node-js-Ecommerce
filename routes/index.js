@@ -30,38 +30,31 @@ var storage = multer.diskStorage({
  
 var upload = multer({ storage: storage }).single('file')
 var bcrypt = require('bcryptjs');
-
-if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
-    localStorage = new LocalStorage('./scratch');
-  }
   
   var jwt = require('jsonwebtoken');
   
   //========== admin login ==========
   function checkLoginUser(req, res, next) {
-    var userToken = localStorage.getItem("userToken");
-    try {
-      var decoded = jwt.verify(userToken, 'loginToken');
-    } catch(err) {
-      res.redirect('/admin')
-    }
+      if(req.session.adminName) {
+      } else{
+        res.redirect('/admin')
+      }
     next()
   }
+
 //=============== client login ===========
   function checkUser(req, res, next) {
-    var userToken = localStorage.getItem("userInfoToken");
-    try {
-      var decoded = jwt.verify(userToken, 'userloginToken');
-    } catch(err) {
-      res.redirect('/login')
-    }
+
+      if(req.session.userId){
+      } else{
+        res.redirect('/login')
+      }
     next()
   }
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -69,21 +62,19 @@ router.get('/', function(req, res, next) {
     userdata = data
   })
 
-  var productData;
-  productModel.find({}).sort({created_at:-1}).limit(5).exec(function(err,data){
+  productModel.find({}).sort({created_at:-1}).limit(5).exec(function(err,productData){
     if (err) throw err
-    productData = data
-  })
-
   category.exec(function(err, data){
     if(err) throw err
     res.render('index',{title:'Mobile', categoryRecord:data ,loginUserInfo:loginUser, latestProduct: productData,userData:userdata})
   })
+})
+
 });
 
 /*=================== about us ============================ */
 router.get('/about-us', function(req, res, next) {
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
     if(err) throw err
@@ -106,7 +97,7 @@ router.get('/action-button', function(req, res, next) {
 
 /*=================== completed order ============================ */
 router.get('/Order/Completed', function(req, res, next) {
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -114,28 +105,27 @@ router.get('/Order/Completed', function(req, res, next) {
     userdata = data
   })
 
-  var productData;
-  product.limit(10).exec(function(err,data){
+  product.limit(10).exec(function(err,productData){
     if(err) throw err
-    productData=data
-  })
+ 
 
   category.exec(function(err,data){
     res.render('client/completedOreder',{title:'Mobile',loginUserInfo:loginUser,categoryRecord:data,productRecord:productData,userData:userdata})
 
   })
+})
 });
 
 /*=================== Admin header ============================ */
 router.get('/adminHeader',checkLoginUser, function(req, res, next) {
-  var loginUser = localStorage.getItem('loginUser')
+  var loginUser = req.session.adminName
 
   res.render('admin/adminHeader',{title:'Mobile',loginUser:loginUser})
 });
 
 /*=================== header ============================ */
 router.get('/header', function(req, res, next) {
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -176,7 +166,7 @@ router.get('/Brands/:name', function(req, res, next) {
 
 //================= footer =============================
 router.get('/footer', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
     if(err) throw err
@@ -189,7 +179,7 @@ router.get('/footer', function(req,res, next){
 })
 
 router.get('/brands/:name', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
     if(err) throw err
@@ -209,7 +199,7 @@ router.get('/follow', function(req,res, next){
 
 //================= latest product =============================
 router.get('/latestProduct', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -224,11 +214,10 @@ router.get('/latestProduct', function(req,res, next){
 })
 
 //===================admin product ===========================
-router.get('/admin/Brand/:name', checkLoginUser, function(req,res, next){
-  var loginUser = localStorage.getItem('loginUser')
+router.get('/admin/Brand/:name',checkLoginUser, function(req,res, next){
+  var loginUser = req.session.adminName
 
   var pages;
-
   productModel.find({category:req.params.name}).sort({created_at: -1}).exec(function(err,data){
     if (err) throw err
     res.render('admin/admin-view-product',{title:'Mobile', 
@@ -241,7 +230,7 @@ router.get('/admin/Brand/:name', checkLoginUser, function(req,res, next){
 
 //================= view category =============================
 router.get('/view-category', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
     if(err) throw err
@@ -255,9 +244,10 @@ router.get('/view-category', function(req,res, next){
   })
 })
 
+
 //================= view products =============================
 router.get('/view-product', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -293,7 +283,7 @@ router.get('/view-product', function(req,res, next){
 });
 
 router.get('/view-product/:page', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -330,8 +320,7 @@ router.get('/view-product/:page', function(req,res, next){
 });
 
 router.get('/Brand/:name', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
-
+  var loginUser = req.session.userId
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
     if(err) throw err
@@ -339,11 +328,8 @@ router.get('/Brand/:name', function(req,res, next){
   })
 
   var pages;
-  var  categoryData;
-  category.exec(function(err, data){
+  category.exec(function(err, categoryData){
     if(err) throw err
-    categoryData = data;
-  })
 
   productModel.find({category:req.params.name}).sort({created_at: -1}).exec(function(err,data){
     if (err) throw err
@@ -357,9 +343,11 @@ router.get('/Brand/:name', function(req,res, next){
   })
 })
 
+})
+
 //================= product Details =============================
 router.get('/productDetails/:id', function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -367,11 +355,8 @@ router.get('/productDetails/:id', function(req,res, next){
     userdata = data
   })
 
-  var  categoryData;
-  category.exec(function(err, data){
+  category.exec(function(err, categoryData){
     if(err) throw err
-    categoryData = data;
-  })
 
   productModel.find({_id:req.params.id}).exec(function(err,data){
     if (err) throw err
@@ -380,7 +365,8 @@ router.get('/productDetails/:id', function(req,res, next){
      prodectRecord: data,
       categoryRecord:categoryData,
       userData:userdata
-      
+    })
+
     })
   })
 })
@@ -391,7 +377,7 @@ router.get('/autocompleteSearch/', function(req, res, next) {
 
   var regex= new RegExp(req.query["term"],'i');
  
-  var productFilter =productModel.find({brand:regex},{'brand':1}).sort({"updated_at":-1}).sort({"created_at":-1}).limit(20);
+  var productFilter =productModel.find({brand:regex},{'brand':1}).sort({"created_at":-1}).limit(20);
   productFilter.exec(function(err,data){
 
 var result=[];
@@ -419,8 +405,8 @@ var smtpTransport = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
   auth: {
-      user: "", //your email
-      pass: "" // your password
+      user: "khalidmehmood1880@gmail.com", 
+      pass: "khush1880" // your password
   }
 });
 
@@ -437,7 +423,7 @@ router.get('/send',function(req,res){
       to : req.query.to,
       subject : "Thank you for shopping with us!",
       // text : " Our agent contacr you soon "+ req.query.text,
-      html: '<h1>Thanks for shoping!</h1><p>Our call agent will contact you in few hours for order confirmation</p><h4>Order Details</h4>'+ req.query.text +'<p>For more shoping <a href="http://localhost:3000/"> click me </a></p>'
+      html: '<h1>Thanks for shoping!</h1><p>Our call agent will contact you in few hours for order confirmation</p><h4>Order Details</h4>'+ req.query.text +'<p>For more shoping <a href="https://ecommerce-dem0.herokuapp.com/"> click me </a></p>'
     }
   console.log(mailOptions);
   smtpTransport.sendMail(mailOptions, function(error, response){
@@ -453,7 +439,7 @@ router.get('/send',function(req,res){
 
 //================== cart =================
 router.get('/buy-product/:id', function(req, res, next) {
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var productId = req.params.id;
   var cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -471,19 +457,17 @@ router.get('/add/:id', function(req, res, next) {
   productModel.findOne({ _id: productId }, function (err, data) {
     cart.add(data, productId);
     req.session.cart = cart;
-    res.redirect('/');
+    res.redirect('/cart');
   });
   
 });
 
 router.get('/cart', function(req, res, next) {
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
-  var userdata
-  userModel.find({_id:loginUser}).exec(function(err,data){
+  userModel.find({_id:loginUser}).exec(function(err,userdata){
     if(err) throw err
-    userdata = data
-  })
+  
 
   category.exec(function(err, data){
     if(err) throw err;
@@ -496,6 +480,7 @@ router.get('/cart', function(req, res, next) {
   console.log("CART ITEMS"+JSON.stringify(cart.getItems()))
   res.render('client/cart', {title: 'Mobile',categoryRecord: data, products: cart.getItems(), totalPrice: cart.totalPrice,loginUserInfo:loginUser, userData:userdata});
 });
+})
 })
 
 router.get('/remove/:id', function(req, res, next) {
@@ -525,14 +510,11 @@ router.get('/increment/:id', function (req, res, next) {
 
 //================== checkout ===================
 router.get('/checkout',checkUser, function(req, res,next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
   var cart = new Cart(req.session.cart);
 
-  var userdata
-  userModel.find({_id:loginUser}).exec(function(err,data){
+  userModel.find({_id:loginUser}).exec(function(err,userdata){
     if(err) throw err
-    userdata = data
-  })
 
   var catRec
   category.exec(function(err,data){
@@ -556,11 +538,12 @@ router.post('/edit-orderInfo/:id', function(req, res, next){
       if(err) throw err;
       res.redirect('/checkout/')
 })
+})
   
 })
 
 //================== update order status ==================
-router.post('/admin/viewOrder/:id', function(req, res, next){
+router.post('/admin/viewOrder/:id',checkLoginUser, function(req, res, next){
   var statusId = req.params.id;
   orderModel.findByIdAndUpdate(statusId,{
     status: req.body.UpdateStatus
@@ -574,7 +557,7 @@ router.post('/admin/viewOrder/:id', function(req, res, next){
 //==================user profile======================
 
 router.get('/user-Profile/:id',function(req,res, next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -582,16 +565,16 @@ router.get('/user-Profile/:id',function(req,res, next){
     userdata = data
   })
 
-var catdata;
-category.exec(function(err, data){
+category.exec(function(err, catdata){
   if(err) throw err
-  catdata = data
-})
+
 
   userModel.find({_id:req.params.id}).exec(function(err,data){
     if(err) throw err
     res.render('client/userProfile',{title:'Mobile',userRecord:data,categoryRecord:catdata,loginUserInfo:loginUser,userData:userdata})
   })
+})
+
 })
 
 //================== update userProfile ==================
@@ -610,7 +593,7 @@ router.post('/edit-profile/:id', function(req, res, next){
 
 //=============== user orders ================
 router.get('/my-order',function(req,res,next){
-  var loginUser = localStorage.getItem('loginUserInfo')
+  var loginUser = req.session.userId
 
   var userdata
   userModel.find({_id:loginUser}).exec(function(err,data){
@@ -618,11 +601,9 @@ router.get('/my-order',function(req,res,next){
     userdata = data
   })
 
-  var catdata
-  category.exec(function(err,catRec){
+  category.exec(function(err,catdata){
     if(err) throw err
-    catdata = catRec
-  })
+ 
 
   orderModel.find({user:loginUser}).populate('product').exec(function(err,data){
     if(err) throw err
@@ -630,19 +611,22 @@ router.get('/my-order',function(req,res,next){
     res.render('client/userOrder',{title:'Mobile',userOrder:data,categoryRecord:catdata,loginUserInfo:loginUser, userData:userdata})
   })
 })
+})
 
 // ============admin logout ==============
-router.get('/logout',function(req, res, next) {
-  localStorage.removeItem('userToken');
-  localStorage.removeItem('loginUser');
-  res.redirect('/admin')
+router.get('/logout',checkLoginUser,function(req, res, next) {
+  req.session.destroy(function(err){
+    if(err) throw err
+      res.redirect('/admin')
+  })
 });
 
 //=============== user logout
 router.get('/Userlogout',function(req, res, next) {
-  localStorage.removeItem('userInfoToken');
-  localStorage.removeItem('loginUserInfo');
-  res.redirect('/')
+  req.session.destroy(function(err){
+    if(err) throw err
+      res.redirect('/')
+  })
 });
 
 module.exports = router;

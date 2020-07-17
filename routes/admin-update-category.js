@@ -22,27 +22,20 @@ var storage = multer.diskStorage({
  
 var upload = multer({ storage: storage }).single('file')
 var bcrypt = require('bcryptjs');
-
-if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
-    localStorage = new LocalStorage('./scratch');
-  }
   
   var jwt = require('jsonwebtoken');
   
   function checkLoginUser(req, res, next) {
-    var userToken = localStorage.getItem("userToken");
-    try {
-      var decoded = jwt.verify(userToken, 'loginToken');
-    } catch(err) {
+    if(req.session.adminName) {
+    } else{
       res.redirect('/admin')
     }
-    next()
+  next()
   }
 
   
   router.get('/edit/:id',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
     var id = req.params.id;
     var getCategory = categoryModel.findById({_id:id});
     getCategory.exec(function(err,data){
@@ -50,8 +43,8 @@ if (typeof localStorage === "undefined" || localStorage === null) {
     })
   })
 
-  router.post('/:id',upload,checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+  router.post('/:id',checkLoginUser,upload, function(req,res, next){
+    var loginUser = req.session.adminName
     var id = req.params.id;
     categoryModel.findByIdAndUpdate(id,{
       name:req.body.categoryName,

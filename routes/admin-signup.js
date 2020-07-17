@@ -16,22 +16,15 @@ var signup = signupModel.find({})
 router.use(express.static(__dirname+"./public/"));
 
 
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
-}
-
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 
 function checkLoginUser(req, res, next) {
-  var userToken = localStorage.getItem("userToken");
-  try {
-    var decoded = jwt.verify(userToken, 'loginToken');
-  } catch(err) {
+  if(req.session.adminName) {
+  } else{
     res.redirect('/admin')
   }
-  next()
+next()
 }
 
 
@@ -64,7 +57,6 @@ function checkEmail(req, res, next){
         res.render('admin/signup',{title:'Mobile',msg:''})
   })
 
-  
   router.post('/',checkLoginUser, checkUserName,checkEmail, function(req, res, next) {
     var username = req.body.uname;
     var email = req.body.email;

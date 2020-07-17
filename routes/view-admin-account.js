@@ -17,37 +17,29 @@ var accountModel = require('../model/admin-signup')
 var account = accountModel.find({})
 router.use(express.static(__dirname+"./public/"));
 
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
-}
 
 var jwt = require('jsonwebtoken');
 
 function checkLoginUser(req, res, next) {
-  var userToken = localStorage.getItem("userToken");
-  try {
-    var decoded = jwt.verify(userToken, 'loginToken');
-  } catch(err) {
+  if(req.session.adminName) {
+  } else{
     res.redirect('/admin')
   }
-  next()
+next()
 }
 
-  router.get('/',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+router.get('/',checkLoginUser,function(req,res,next){
+  var loginUser = req.session.adminName
 
-    account.exec(function(err, data){
-
-        res.render('admin/view-admin-account',{title:'Mobile',adminAcountRecord:data,
-        loginUser:loginUser
-     });
-    })
-});
+  account.exec(function(err,data){
+    if(err) throw err
+    res.render('admin/view-admin-account',{title:'Mobile',adminAcountRecord:data,loginUser:loginUser })
+  })
+})
 
 
   router.get('/delete/:id',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
     accountModel.findByIdAndDelete({_id:req.params.id}).exec(function(err){
     if(err) throw err

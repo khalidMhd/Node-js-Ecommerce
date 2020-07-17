@@ -15,25 +15,18 @@ var buy = buyModel.find({})
 
 router.use(express.static(__dirname+"./public/"));
 
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
-}
-
 var jwt = require('jsonwebtoken');
 
 function checkLoginUser(req, res, next) {
-  var userToken = localStorage.getItem("userToken");
-  try {
-    var decoded = jwt.verify(userToken, 'loginToken');
-  } catch(err) {
+  if(req.session.adminName) {
+  } else{
     res.redirect('/admin')
-  } 
-  next()
+  }
+next()
 }
    
   router.get('/',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
     var perPage = 12;
     var page = page || 1;
@@ -55,7 +48,7 @@ function checkLoginUser(req, res, next) {
 
 
   router.get('/:page',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
     var perPage = 12;
     var page = req.params.page || 1;
@@ -81,7 +74,7 @@ function checkLoginUser(req, res, next) {
 
 
   router.get('/delete/:id',checkLoginUser, function(req,res, next){
-    var loginUser = localStorage.getItem('loginUser')
+    var loginUser = req.session.adminName
 
     var pages;
     contactModel.findByIdAndDelete({_id:req.params.id}).exec(function(err){
